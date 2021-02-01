@@ -1,14 +1,23 @@
-# specific branch build
 trigger:
-  branches:  
+ branches:
     include:
-    - master
-    - feature/*
+      - master
+      - feature/*
+
+variables:
+  tag: $(VERSION)
+
+# resources:
+# - repo: self
+
+variables:
+    tag: 'latest'
+  # tag: '$(Build.BuildId)'
 
 stages:
-- stage: Deploy
+- stage: Test
   jobs:
-  ## for feature branches only do the npm install and build to make sure everything is compiling
+  ## Feature branches should only run tests and build checks
   - job: FeatureBranch
     pool:
       vmImage: "ubuntu-latest"
@@ -16,22 +25,34 @@ stages:
     steps:
     - template: ./template/template-npm.yml
       parameters:
-        configFolder: ./src/settings/stage
 
-  ### deploy master in production
-  - job: MasterBranch
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    condition: startsWith(variables['build.sourceBranch'], 'refs/heads/master')
+    displayName: Build
     pool:
-      vmImage: "ubuntu-latest"
-    condition: eq(variables['build.sourceBranch'], 'refs/heads/master')
+      vmImage: 'ubuntu-latest'
     steps:
-    - template: ./template/template-npm.yml
-      parameters:
-        configFolder: ./src/settings/prod
-    - template: ./template/template-deploy.yml
-      parameters:
-        dockerVersion: "1.0.28"
-        containerRegistryUrl: $(CONTAINER-REGISTRY).azurecr.io
-        containerRegistryName: $(CONTAINER-REGISTRY)
-  # variables:
-  #   - group: 'Secrets'
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        tags: |
+          $(tag)
 
+    - task: Docker@2
+      displayName: Push image to Azure Container Registry
+      inputs:
+        containerRegistry: $(DOCKER-CR)
+        repository: $(IMAGE-REPO)
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+
+# A placeholder where secrets would be injected using the Service connection, secure vars
+# variables:
+#   - group: 'Secrets'

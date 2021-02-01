@@ -1,0 +1,84 @@
+steps:
+
+- task: NodeTool@0
+  displayName: 'Use Node 10.x'
+  inputs:
+    versionSpec: 10.x
+
+- task: Npm@1
+  displayName: 'npm ci'
+  inputs:
+    # if your working directory is not root, you may change the following path
+    workingDir: './'
+    verbose: false,
+    customCommand: 'ci'
+
+- script: |
+    export CONFIG_FOLDER=${{ parameters.configFolder }}
+    npm run build
+  displayName: 'Set Environment variable and run build'
+eteps:
+  - checkout: self
+    clean: true
+    persistCredentials: true
+
+  - task: Npm@1
+    displayName: "npm ci"
+    inputs:
+      verbose: true
+      customCommand: "ci"
+
+  - task: Npm@1
+    displayName: "test with coverage"
+    inputs:
+      command: custom
+      workingDir: "./"
+      verbose: false
+      customCommand: "run test-coverage-ci"
+
+  - task: PublishTestResults@2
+    displayName: "publish test results"
+    inputs:
+      testResultsFiles: "test-results.xml"
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    displayName: "publish code coverage"
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: "./coverage/cobertura-coverage.xml"
+      reportDirectory: "./coverage/"
+
+  - script: npm run build
+    displayName: "npm build"
+
+- task: Npm@1
+  displayName: "test with coverage"
+  inputs:
+    command: custom
+    workingDir: "./"
+    verbose: false
+    customCommand: "run test-coverage-ci"
+
+- task: PublishTestResults@2
+  displayName: 'publish test results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'test-results.xml'
+    failTaskOnFailedTests: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'publish code coverage'
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: Cobertura
+    # if your working directory is not root, you may change the following paths
+    summaryFileLocation: './coverage/cobertura-coverage.xml'
+    reportDirectory: './coverage/'
+  
+# NPM Authenticate step used to inject the auth key in the .npmrc for later use when publishing
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: .npmrc
+  displayName: "NPM Authenticate"
+  
