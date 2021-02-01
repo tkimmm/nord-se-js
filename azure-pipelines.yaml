@@ -21,7 +21,7 @@ stages:
     condition: startsWith(variables['build.sourceBranch'], 'refs/heads/feature/')
     steps:
     - template: ./template/template-npm.yml
-      parameters:
+      parameters: "."
 
 - stage: Build
   displayName: Build image
