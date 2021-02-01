@@ -21,10 +21,11 @@ stages:
     condition: startsWith(variables['build.sourceBranch'], 'refs/heads/feature/')
     steps:
     - template: ./template/template-npm.yml
-      parameters: "."
+      parameters:
+        configFolder: ./src/settings
 
 - stage: Build
-  displayName: Build image
+  displayName: Build image and push to ACR/Docker Hub
   jobs:
   - job: Build
     condition: startsWith(variables['build.sourceBranch'], 'refs/heads/master')

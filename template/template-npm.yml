@@ -76,9 +76,10 @@ eteps:
     summaryFileLocation: './coverage/cobertura-coverage.xml'
     reportDirectory: './coverage/'
   
+# Placeholder for Azure Artifacts (100 Node Developers as per Business Requirements, Ideally should be working off same upstream)
 # NPM Authenticate step used to inject the auth key in the .npmrc for later use when publishing
-- task: npmAuthenticate@0
-  inputs:
-    workingFile: .npmrc
-  displayName: "NPM Authenticate"
+# - task: npmAuthenticate@0
+#   inputs:
+#     workingFile: .npmrc
+#   displayName: "NPM Authenticate"
   
