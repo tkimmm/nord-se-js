@@ -6,13 +6,10 @@ trigger:
 
 variables:
   tag: $(VERSION)
-
-# resources:
-# - repo: self
-
-variables:
-    tag: 'latest'
   # tag: '$(Build.BuildId)'
+
+resources:
+- repo: self
 
 stages:
 - stage: Test
