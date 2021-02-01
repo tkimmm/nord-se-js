@@ -8,4 +8,6 @@
 - Update tests instructions 
 - Build out pipeline
 - Explain key vault, secret injection etc
-- Explain dummy coverage results
+- Explain dummy coverage
+- Provide, diff architectures, Azure Container Instance / Web App / Docker-Compose 
+- Add in pulumi / terraform examples

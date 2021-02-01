@@ -24,7 +24,7 @@ steps:
     command: custom
     workingDir: "./"
     verbose: false
-    customCommand: "echo Running coverage tests!"
+    customCommand: "run test-coverage"
 # This won't work but expect it in a production environment
 # Provided as an example
 - task: PublishTestResults@2
