@@ -1,0 +1,53 @@
+steps:
+
+- task: NodeTool@0
+  displayName: 'Use Node 10.x'
+  inputs:
+    versionSpec: 10.x
+
+- task: Npm@1
+  displayName: 'npm ci'
+  inputs:
+    # if your working directory is not root, you may change the following path
+    workingDir: './'
+    verbose: false,
+    customCommand: 'ci'
+
+- script: |
+    export CONFIG_FOLDER=${{ parameters.configFolder }}
+    npm run test
+  displayName: 'Setting Environment variable and running tests!'
+
+- task: Npm@1
+  displayName: "test with coverage"
+  inputs:
+    command: custom
+    workingDir: "./"
+    verbose: false
+    customCommand: "run test-coverage"
+# This won't work but expect it in a production environment
+# Provided as an example
+- task: PublishTestResults@2
+  displayName: 'publish test results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'test-results.xml'
+    failTaskOnFailedTests: false
+
+# This won't work but expect it in a production environment
+- task: PublishCodeCoverageResults@1
+  displayName: 'publish code coverage'
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: Cobertura
+    # if your working directory is not root, you may change the following paths
+    summaryFileLocation: './coverage/cobertura-coverage.xml'
+    reportDirectory: './coverage/'
+  
+# This won't work but expect it in a production environment
+# NPM Authenticate step used to inject the auth key in the .npmrc for later use when publishing
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: .npmrc
+  displayName: "NPM Authenticate"
+  

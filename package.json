@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "./node_modules/mocha/bin/mocha tests",
+    "test-coverage": "echo Running code coverage tests"
   },
   "dependencies": {
     "express": "~4.2.0",
