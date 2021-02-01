@@ -1,0 +1,37 @@
+# specific branch build
+trigger:
+  branches:  
+    include:
+    - master
+    - feature/*
+
+stages:
+- stage: Deploy
+  jobs:
+  ## for feature branches only do the npm install and build to make sure everything is compiling
+  - job: FeatureBranch
+    pool:
+      vmImage: "ubuntu-latest"
+    condition: startsWith(variables['build.sourceBranch'], 'refs/heads/feature/')
+    steps:
+    - template: ./template/template-npm.yml
+      parameters:
+        configFolder: ./src/settings/stage
+
+  ### deploy master in production
+  - job: MasterBranch
+    pool:
+      vmImage: "ubuntu-latest"
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/master')
+    steps:
+    - template: ./template/template-npm.yml
+      parameters:
+        configFolder: ./src/settings/prod
+    - template: ./template/template-deploy.yml
+      parameters:
+        dockerVersion: "1.0.28"
+        containerRegistryUrl: $(CONTAINER-REGISTRY).azurecr.io
+        containerRegistryName: $(CONTAINER-REGISTRY)
+  # variables:
+  #   - group: 'Secrets'
+
