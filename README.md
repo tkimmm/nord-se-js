@@ -8,3 +8,4 @@
 - Update tests instructions 
 - Build out pipeline
 - Explain key vault, secret injection etc
+- Explain dummy coverage results

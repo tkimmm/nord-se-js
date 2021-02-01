@@ -26,12 +26,13 @@ steps:
     verbose: false
     customCommand: "echo Running coverage tests!"
 # This won't work but expect it in a production environment
+# Provided as an example
 - task: PublishTestResults@2
   displayName: 'publish test results'
   condition: succeededOrFailed()
   inputs:
     testResultsFiles: 'test-results.xml'
-    failTaskOnFailedTests: true
+    failTaskOnFailedTests: false
 
 # This won't work but expect it in a production environment
 - task: PublishCodeCoverageResults@1
