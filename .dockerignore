@@ -1,5 +1,10 @@
 node_modules
+template
 .env
+.DS_Store
 .pem
 .key
+docs/
 azure-pipelines.yml
+README.md
+pipeline
