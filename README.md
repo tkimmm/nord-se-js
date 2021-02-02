@@ -1,4 +1,4 @@
-[![CI status on Azure Pipelines](https://dev.azure.com/tomkim22/nord-devops/_apis/build/status/nord-devops?branchName=master)](https://dev.azure.com/tomkim22/nord-devops/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/tomkim22/nord-devops/_apis/build/status/tkimmm.nord-se-js?branchName=master)](https://dev.azure.com/tomkim22/nord-devops/_build/latest?definitionId=9&branchName=master)
 
 ## Welcome to Nord-Jam
 
