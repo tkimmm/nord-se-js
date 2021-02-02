@@ -5,6 +5,6 @@ template
 .pem
 .key
 docs/
-azure-pipelines.yml
+azure-pipelines.yaml
 README.md
 pipeline
