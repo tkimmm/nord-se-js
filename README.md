@@ -1,8 +1,12 @@
 [![Build Status](https://dev.azure.com/tomkim22/nord-devops/_apis/build/status/tkimmm.nord-se-js?branchName=master)](https://dev.azure.com/tomkim22/nord-devops/_build/latest?definitionId=9&branchName=master)
 
-## Welcome to Nord-Jam
+# Welcome to Nord-Jam
 
 [Demo @ https://nordjam.tkim.io](https://nordjam.tkim.io)
+
+### Demo Architecture
+![Architecture](./docs/schematic.png)
+
 
 ## Requirements
 
