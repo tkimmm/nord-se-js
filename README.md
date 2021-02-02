@@ -5,7 +5,7 @@
 [Demo @ https://nordjam.tkim.io](https://nordjam.tkim.io)
 
 ### Demo Architecture
-![Architecture](./docs/schematic.png)
+![Architecture](./docs/arch.png)
 
 
 ## Requirements
